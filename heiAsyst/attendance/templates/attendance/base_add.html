@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="theme-color" content="#007bff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta content='yes' name='apple-mobile-web-app-capable'/>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Google font and icon -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- My CSS -->
+    
+    <link rel="stylesheet" href="{% static 'css/styleAdd.css' %}">
+    
+    
+    <!-- Title Start -->
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Title End -->
+
+  </head>
+  <body>
+    <div class="container">
+      <div class="alert alert-danger" id="text-resolution" role="alert">
+        Hanya tersedia dalam versi Mobile
+      </div>
+    </div>
+    <div class="body">
+      <nav class="navbar navbar-dark bg-primary" style="box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3); height: 60px;">
+        <a href="{{ back_url }}" onclick="loading()" style="display: inline-flex; text-decoration: none; color: inherit;">
+          <i class="material-icons" style="color: white; font-size: 30px;">arrow_back</i><b style="color: white; margin: auto; font-size: 20px;"> {{ url }}</b>
+        </a>
+      </nav>
+
+      <div class="container" style="margin-top: 70px;">
+        {% include 'attendance/message.html' %}
+        {% block content %}
+        {% endblock %}
+      </div>
+
+      <div id="backdropz"></div>
+      <div class="spinner-border" id="spinner" role="status" style="width: 3rem; height: 3rem; display: none;">
+          <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      function loading() {
+        document.getElementById("backdropz").style.width = "100%";
+        document.getElementById("backdropz").style.opacity = "0.5";
+        document.getElementById("spinner").style.display = "block";
+        document.getElementById("backdrop").style.width = "0";
+        document.getElementById("backdrop").style.opacity = "0";
+        document.getElementById("backdrops").style.width = "0";
+        document.getElementById("backdrops").style.opacity = "0";
+      }
+    </script>
+  </body>
+</html>

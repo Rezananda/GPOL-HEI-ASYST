@@ -1,0 +1,132 @@
+/* Bottom navbar start */
+
+div.jumbotron-base {
+    height: 300px;
+    z-index: -2;
+    background: #0080ed;
+    border-bottom-left-radius: 50px 30px;
+    border-bottom-right-radius: 50px 30px;
+}
+
+div#text-resolution {
+    display: none;
+}
+
+.text-white {
+    font-weight: 500;
+}
+
+.container.lead {
+    /* margin-top: 10px; */
+    text-align: center;
+}
+
+/* body start */
+.card-title, .card-text {
+    text-align: center;
+}
+
+.card-title {
+    font-size: 19px;
+}
+
+.card {
+    border-style: none;
+    margin-top: -170px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+}
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.form-control {
+    border-radius: 20px;
+}
+
+.btn.btn-primary.btn-block {
+    border-radius: 20px;
+}
+
+.text-account {
+    text-align: center;
+}
+
+div#backdrop {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    /* z-index: 1; */
+    /* transition: opacity 0.9s; */
+    background: white;
+    opacity: 0;
+  }
+
+#spinner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 1;
+}
+
+/* body end */
+
+/* versi desktop */
+@media (min-width: 992px) {
+    body {
+        background-color: white;
+    }
+    div.body {
+        display : none;
+    }
+    div#text-resolution {
+        display: block;
+        text-align: center;
+    }
+
+}
+
+/* ----------- Non-Retina Screens ----------- */
+@media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) 
+  and (-webkit-min-device-pixel-ratio: 1) { 
+    body {
+        background-color: white;
+    }
+    div.body {
+        display : none;
+    }
+    div#text-resolution {
+        display: block;
+        text-align: center;
+    }
+}
+
+/* ----------- Retina Screens ----------- */
+@media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (min-resolution: 192dpi) { 
+    body {
+        background-color: white;
+    }
+    div.body {
+        display : none;
+    }
+    div#text-resolution {
+        display: block;
+        text-align: center;
+    }
+}

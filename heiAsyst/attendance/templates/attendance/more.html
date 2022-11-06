@@ -1,0 +1,93 @@
+{% extends 'attendance/base.html' %}
+
+{% block title %}
+Kehadiran
+{% endblock %}
+
+{% block content %}
+<div class="card" style="border-radius: 20px; margin-top: -15px;">
+    <div class="card-body">
+        {% include 'attendance/message.html' %}
+        <h5 class="card-title text-primary">AKUN SAYA</h5>
+        <form id="form-akun" action="/edit-account/{{ id }}/" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+            <label for="namaLengkah">Nama</label>
+            <input type="text" class="form-control" name="namaLengkah" id="namaLengkah" value="{{ full_name }}" disabled>
+            </div>
+            <div class="form-group">
+            <label for="inisial">Inisial</label>
+            <input type="text" class="form-control" name="inisial" id="inisial" value="{{ initial }}" disabled>
+            </div>
+            <div class="form-group">
+                <label for="biro">Biro</label>
+                <select class="form-control" id="biro" name="biro" required disabled>
+                    <option value="{{ biro }}" selected>{{ biro }}</option>
+                    <option disabled>-</option>
+                    <option value="DPOL">DPOL</option>
+                    <option value="SDS">SDS</option>
+                    <option value="SSD">SSD</option>
+                    <option value="SSP">SSP</option>
+                    <option value="SPO">SPO</option>
+                    <option disabled>-</option>
+                    <option value="BPO 2">BPO 2</option>
+                    <option value="BPO 1">BPO 1</option>
+                    <option value="BSP">BSP</option>
+                    <option value="CNS">CNS</option>
+                    <option value="CPS">CPS</option>
+                    <option value="DAS">DAS</option>
+                    <option value="DSP">DSP</option>
+                    <option value="EPK">EPK</option>
+                    <option value="EPS">EPS</option>
+                    <option value="KLA">KLA</option>
+                    <option value="SDS B">SDS B</option>
+                    <option value="SDS E">SDS E</option>
+                    <option value="SSI A">SSI A</option>
+                    <option value="SSI B">SSI B</option>
+                    <option value="XAS">XAS</option>
+                    <option disabled>-</option>
+                </select>
+            </div>
+            <div class="form-group">
+            <label for="jumlahAnggota">Jumlah Anggota</label>
+            <input type="number" class="form-control" name="jumlahAnggota" id="jumlahAnggota" value="{{ jumlah_member }}" disabled>
+            </div>
+            <br>
+            <button type="submit" onclick="loading()" id="submit-data" style="display: none; border-radius: 30px;" class="btn btn-primary btn-block">Simpan Data</button>
+            <button type="button" id="buttonUbah" style="border-radius: 30px;" class="btn btn-outline-primary btn-block">Ubah Profil</button>
+            <a href="/change-password" onclick="loading()" type="button" style="border-radius: 30px;" class="btn btn-outline-primary btn-block">Ubah Password</a>
+        </form>
+    </div>
+</div>
+<div style="height: 70px;">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#buttonUbah").on("click", function() {
+        if($(".form-control").prop('disabled') == true){
+            $(".form-control").prop('disabled', false);
+            $("#submit-data").css('display', 'block');
+            $("#buttonUbah").text('Kembali');
+            
+        }else{
+            var arrInputs = document.getElementsByTagName("input");
+            var select = document.getElementById("biro")
+            for (var i = 0; i < arrInputs.length; i++) {
+                var oCurInput = arrInputs[i];
+                if (oCurInput.type == "text" || oCurInput.type == "number")
+                    oCurInput.value = oCurInput.defaultValue;
+            }
+            $('#biro option').prop('selected', function() {
+                return this.defaultSelected;
+            });
+            $(".form-control").prop('disabled', true);
+            $("#submit-data").css('display', 'none');
+            $("#buttonUbah").text('Ubah Profil');
+        }
+    })
+})
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,394 @@
+{% extends 'attendance/base_add.html' %}
+
+{% block title %}
+Kehadiran
+{% endblock %}
+
+{% block content %}
+<div class="alert alert-primary alert-dismissible fade show" role="alert" id="alert-null" style="display: none; margin-top: 10px;">
+  Mohon isi alasan anda
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+{% if attendance == False %}
+  <div class="alert alert-primary text-center" role="alert">
+    Belum ada data
+  </div>
+{% else %}
+  <div class="row justify-content-around" id="flex-gap">
+      <a href="/download-to-excel" type="button" style="width: 130px; border-radius: 25px;" class="btn btn-outline-primary btn-sm"><i class="fa fa-download" aria-hidden="true"></i> Unduh Data</a>
+      <button id="date-search" type="button" style="width: 130px; border-radius: 25px;" class="btn btn-outline-primary btn-sm"><i class="fa fa-search" aria-hidden="true"></i> Cari Data</button>
+  </div>
+  <div class="card" id="panel-search" style="border-radius: 10px; margin-top: 5px;">
+    <div class="card-body">
+      <li style="list-style-type: none;">Tampil Berdasarkan Tanggal</li>
+      <div class="input-group mb-3">
+        <input id="search-data" type="date" class="form-control" value="{{ datenow }}">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button" id="button-search">Cari</button>
+        </div>
+      </div>
+      <hr>
+      <li style="list-style-type: none;">Tampil Seluruh Data</li>
+      <button id="button-all" class="btn btn-primary btn-block">Tampilkan</button>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped" style="margin-top: 10px;">
+      <thead class="text-center">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Tanggal</th>
+          <th scope="col">Sehat</th>
+          <th scope="col">Sakit</th>
+          <th scope="col">Alasan</th>
+        </tr>
+      </thead>
+      <tbody class="text-center" id="all-tables">
+      {% for data in attendance %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ data.created_at | date:'Y-m-d' }}</td>
+          <td>{{ data.jumlah_sehat }}</td>
+          <td>{{ data.jumlah_sakit }}</td>
+          <td><h5><a onclick="getStuff({{ data.id }}); slideShow()" style="border-radius: 20px;" class="badge badge-primary text-white">Detail</a></h5></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}
+
+<div id="slideup" class="panel">
+  <div class="modal-header">
+    <h5 class="modal-title text-primary">DETAIL</h5>
+    <button onclick="slideHide()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="container">
+    <form id="form-edit" method="POST">
+      {% csrf_token %}
+      <div id="semua-sehat" style="display: none; margin-top: 10px;">
+        <h6 class="text-primary">Ubah Menjadi Sehat</h6>
+        <button id="semua-sehats" type="button" class="btn btn-primary btn-block d-flex justify-content-center" style="margin-top: 10px; border-radius: 20px;"><i class="material-icons">playlist_add_check</i>&nbsp;&nbsp;Sehat</button>
+        <hr>
+      </div>
+      <div id="addRow" style="margin-top: 10px; display: none;">
+        <h6 class="text-primary">Ubah/Tambah Alasan Sakit</h6>
+        <button id="addRows" type="button" class="btn btn-outline-primary btn-block d-flex justify-content-center" style="margin-top: 10px; border-radius: 20px;"><i class="material-icons">add_circle</i>&nbsp;&nbsp;Tambah Alasan</button>
+      </div>
+      <div id="message-sehat" style="margin-top: 10px;"></div>
+      <div class="container" style="margin-top: 10px;">
+        <div class="row justify-content-around" id="flex-gap">
+          <div class="col-6">
+            <button type="button" style="width: 145px; border-radius: 25px;" class="btn btn-outline-primary" onclick="undesable('undisabled')" data-target="#exampleModal">Ubah Data</button>
+          </div>
+          <div class="col-6">
+            <button id="tutup" type="button" style="width: 145px; border-radius: 25px;" class="btn btn-primary" data-toggle="modal" onclick="slideHide()" data-target="#exampleModal">Tutup</button>
+            <button id="simpan" type="button" style="width: 145px; display: none; border-radius: 25px;" class="btn btn-primary">Simpan</button>
+          </div>
+        </div>
+      </div>
+    <div style="height: 20px;"></div>
+    </form>
+  </div>
+</div>
+
+<div id="backdrop" onclick="slideHide()"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  function slideShow(){
+    jQuery('#slideup').slideDown(600);
+    document.getElementById("backdrop").style.width = "100%";
+    document.getElementById("backdrop").style.opacity = "0.5";
+    document.getElementById("tutup").style.display = 'block';    
+  }
+
+  function slideHide(){
+    document.getElementById("addRow").style.display = 'none';
+    document.getElementById("semua-sehat").style.display = 'none';
+    document.getElementById("simpan").style.display = 'none';
+    document.getElementById("tutup").style.display = 'none';
+    jQuery('#slideup').slideUp(600);
+    document.getElementById("backdrop").style.width = "0";
+    document.getElementById("backdrop").style.opacity = "0";
+    $("#form-edit").removeAttr("action");
+  } 
+
+  $(document).ready(function(){
+    $("#button-search").on("click", function() {
+      var value = $("#search-data").val().toLowerCase();
+      $("#all-tables tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      $("#panel-search").slideUp();
+    });
+  });
+
+  $(document).ready(function(){
+    $("#button-all").on("click", function() {
+      $("#search-data").val("");
+      var value = $("#search-data").val().toLowerCase();
+      $("#all-tables tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      $("#panel-search").slideUp();
+    });
+  });
+
+  function getStuff(elem) {
+    const id = elem;
+    $('#simpan').attr('onclick', 'edit_data("tidak", '+id+'); slideHide(); loading()');
+    $('#semua-sehats').attr('onclick', 'edit_data("ya", '+id+'); loading()');
+    
+    $.ajax({
+      url:window.location.pathname + id,
+      type:'GET',
+      contentType:'application/json; charset=utf-8',
+      dataType:'json',
+      success:function (result) {
+
+        if(result.attendance.message == 'sehat') {
+          $('#message-sehat').html(`
+          <div id="text-sakit" class="alert alert-primary text-center" role="alert">
+            Sehat
+          </div>
+          `)
+        }else if(result.attendance.message == 'sakit'){
+          var container = document.getElementById("message-sehat");
+          while (container.hasChildNodes()) {
+            container.removeChild(container.lastChild);
+          }
+          // <input id="show-data`+(i+1)+`" type="text" name="alasan-`+(i+1)+`" value="`+value[i].alasan+`" class="form-control col-10" autocomplete="off" disabled>
+          var value = result.attendance.alasan_sakit;
+          for (i=0;i<value.length;i++){
+            $('#message-sehat').append(`
+            <div id="inputFormRow">
+              <div class="input-group">
+                <i id="removeRow`+(i+1)+`" style="margin: auto; font-size: 35px; display: none;" class="material-icons text-danger delete">disabled_by_default</i>
+                
+                <select class="custom-select" id="show-data`+(i+1)+`" disabled>
+                  <option value="`+value[i].alasan+`" selected disabled>`+value[i].alasan+`</option>
+                  <option value="Flu">Flu</option>
+                  <option value="Batuk">Batuk</option>
+                  <option value="Demam">Demam</option>
+                  <option value="Sakit Kepala">Sakit Kepala</option>
+                  <option value="Datang Bulan">Datang Bulan</option>
+                  <option value="Sakit Tenggorokan">Sakit Tenggorokan</option>
+                  <option value="Maag">Maag</option>
+                  <option value="Diare">Diare</option>
+                  <option value="Sakit Gigi">Sakit Gigi</option>
+                  <option value="Mual-mual">Mual-mual</option>
+                  <option value="Cacar">Cacar</option>
+                  <option value="Gatal-gatal">Gatal-gatal</option>
+                  <option value="Typhus">Typhus</option>
+                  <option value="Influenza/Pilek">Influenza/Pilek</option>
+                  <option value="Usus Buntu">Usus Buntu</option>
+                  <option value="Infeksi Paru">Infeksi Paru</option>
+		<option value="Sakit Mata">Sakit Mata</option>
+		<option value="Backpain">Backpain</option>
+                  <option value="KIPI">KIPI</option>
+<option value="COVID">COVID</option>
+                  <option value="Sakit Lainnya">Sakit Lainnya</option>
+
+                </select>
+                <input id="show-datas`+(i+1)+`" type="number" name="alasans-`+(i+1)+`" value="`+parseInt(value[i].jumlah)+`" class="form-control col-2 text-center" autocomplete="off" disabled>
+                <i id="minus" style="margin: auto; font-size: 35px; display: none;" class="material-icons text-primary" onclick="decrement('show-datas`+(i+1)+`')">indeterminate_check_box</i>
+                <i id="plus" style="margin: auto; font-size: 35px; display: none;" class="material-icons text-primary" onclick="increment('show-datas`+(i+1)+`')">add_box</i>
+              </div>
+            </div>
+            </br>
+            <script>
+              function increment(param) {
+                const inc = param
+                document.getElementById(inc).stepUp(1);
+              }
+              function decrement(param) {
+                const dec = param
+                document.getElementById(dec).stepDown(1);
+              }
+            </`+`script>
+            `);
+
+            $(document).on("click", "#removeRow"+(i+1), function () {
+                $(this).closest("#inputFormRow").remove();
+            });
+          };
+        }
+
+      },
+      error: function (response) {
+        console.log(response)
+      }
+    });
+  }
+  // <input type="text" name="title" class="form-control" id="first-input`+clicks+`" placeholder="Alasan Sakit" autocomplete="off" required>
+  var clicks = 1;
+  $("#addRows").click(function () {
+    clicks += 1;
+    $('#message-sehat').append(`
+    <div id="inputFormRow">
+      <div class="input-group">
+          <i id="removeRow" style="margin: auto; font-size: 35px; " class="material-icons text-danger">disabled_by_default</i>
+          <select class="custom-select" id="first-input`+clicks+`">
+            <option selected disabled>Pilih Alasan...</option>
+            <option value="Flu">Flu</option>
+            <option value="Batuk">Batuk</option>
+            <option value="Demam">Demam</option>
+            <option value="Sakit Kepala">Sakit Kepala</option>
+            <option value="Datang Bulan">Datang Bulan</option>
+            <option value="Sakit Tenggorokan">Sakit Tenggorokan</option>
+            <option value="Maag">Maag</option>
+            <option value="Diare">Diare</option>
+            <option value="Sakit Gigi">Sakit Gigi</option>
+            <option value="Mual-mual">Mual-mual</option>
+            <option value="Cacar">Cacar</option>
+            <option value="Gatal-gatal">Gatal-gatal</option>
+            <option value="Typhus">Typhus</option>
+            <option value="Influenza/Pilek">Influenza/Pilek</option>
+            <option value="Usus Buntu">Usus Buntu</option>
+            <option value="Infeksi Paru">Infeksi Paru</option>
+		<option value="Sakit Mata">Sakit Mata</option>
+		<option value="Backpain">Backpain</option>
+                <option value="KIPI">KIPI</option>
+<option value="COVID">COVID</option>
+                <option value="Sakit Lainnya">Sakit Lainnya</option>
+
+
+          </select>
+          <input id="demoInput`+clicks+`" value="1" type="number" class="form-control col-2 text-center numbers" min=1 max=100 readonly>
+          <i id="minus" style="margin: auto; font-size: 35px;" class="material-icons text-primary" onclick="decrement('demoInput`+clicks+`')">indeterminate_check_box</i>
+          <i id="plus" style="margin: auto; font-size: 35px;" class="material-icons text-primary" onclick="increment('demoInput`+clicks+`')">add_box</i>
+        </div>
+      <br>
+    </div>
+    <script>
+      function increment(param) {
+        const inc = param
+        document.getElementById(inc).stepUp(1);
+      }
+      function decrement(param) {
+        const dec = param
+        document.getElementById(dec).stepDown(1);
+      }
+    </`+`script>
+    `);
+  });
+
+  $(document).on('click', '#removeRow', function () {
+      $(this).closest('#inputFormRow').remove();
+  });
+
+  function undesable(param) {
+    if (param == "disabled") {
+      var form  = document.getElementById("form-edit");
+      var allelement = form.elements;
+      for (i = 0; i < allelement.length; i++){
+        allElements[i].disabled=true;
+      }
+    } else if (param == "undisabled") {
+      var form  = document.getElementById("form-edit");
+      var text = document.getElementById("text-sakit");
+      if (text){
+        text.style.display = 'none'
+        document.getElementById("addRow").style.display = 'block';
+        document.getElementById("semua-sehat").style.display = 'block';
+        document.getElementById("tutup").style.display = 'none';
+        document.getElementById("simpan").style.display = 'block';
+      } else if (form){
+        var allelement = form.elements;
+        for (i = 0; i < allelement.length; i++){
+          allelement[i].disabled=false;
+        }
+        $("[type=number]").prop("disabled", true);
+        $('i.delete').css("display", "block");
+        $('i#plus').css("display", "block");
+        $('i#minus').css("display", "block");
+        document.getElementById("addRow").style.display = 'block';
+        document.getElementById("semua-sehat").style.display = 'block';
+        document.getElementById("tutup").style.display = 'none';
+        document.getElementById("simpan").style.display = 'block';
+      }
+    }
+  }
+
+  function edit_data(param, ids){
+    const status = param;
+    const id = ids;
+    var token = '{{csrf_token}}';
+
+    if (status == 'ya'){
+      $.ajax({
+      headers: { "X-CSRFToken": token },
+      type : "POST", 
+      url: window.location.origin+"/my-attend-list/"+id+"/",
+      data: {
+        status : status,
+        csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+      },
+      success: function(data){
+        window.location.href = '/my-attend-list/'
+       },
+      
+      });
+
+    } else if (status == 'tidak'){
+      var listNumber = [];
+      var listText = [];
+
+      $('#form-edit input[type=number]').each(function() {
+        listNumber.push($(this).val())
+      });
+
+      $('select option:selected').each(function() {
+        listText.push($(this).val())
+      });
+      // console.log(listText)
+      // return false
+      for(var i = 0; i < listText.length; i++){
+        if(listText[i] === ""){
+          $('#alert-null').css("display", "block")
+          slideHide()
+          return false
+        }
+      }
+
+      object = {}
+
+      listText.forEach(function(k, i){
+        object[k] = parseInt(listNumber[i])
+      })
+      
+      console.log(object)
+      $.ajax({  
+        type: 'POST',
+        url: window.location.origin+"/my-attend-list/"+id+"/",  
+        data: {
+          status : status,
+          alasan_sakit : JSON.stringify(object),
+          csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+        },
+        dataType: 'json',
+        success : successFunction
+      });
+    }
+  }
+
+  function successFunction(msg) {
+    window.location.href = '/my-attend-list/'
+  }
+
+  $(document).ready(function(){
+    $("#date-search").click(function(){
+    $("#panel-search").slideToggle("slow");
+    });
+  });
+
+</script>
+{% endblock %}
+
+

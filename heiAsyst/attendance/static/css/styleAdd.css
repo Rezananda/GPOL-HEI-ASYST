@@ -1,0 +1,190 @@
+div#text-resolution {
+    display: none;
+}
+
+nav.navbar {
+    position: fixed;
+    max-width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 0;
+}
+
+div.jumbotron-add {
+    margin-top: 50px;
+    height: 60px;
+    border-bottom-left-radius: 45px 30px;
+    border-bottom-right-radius: 45px 30px;
+}
+
+div.container.lead {
+    margin-top: -30px;
+    align-items: center;
+    text-align: center;
+}
+
+.slider {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    overflow: hidden;
+    background-color: #000; color: #FFF;
+    transition: all 1s;
+  }
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+  
+.slider.close {
+    top: 100%;
+    height: 0;
+}
+
+
+#panel {
+    display: none;
+}
+
+div#panel-search {
+    display: none;
+}
+
+.buttonisikehadiran {
+    margin-top: 10px;
+}
+
+.buttonisikehadiran a {
+    width: 100px;
+}
+
+.panel {
+    position: relative;
+    z-index: 1;
+    overflow: auto;
+    /* height: 250px; */
+    background-color: white;
+}
+
+
+#buttonLogout {
+    margin-top: 355px;
+}
+
+#chartbutton {
+    margin-top: 30px;
+}
+
+button#addButtons {
+    border-radius: 30px;
+}
+
+button#addButton {
+    position: fixed; 
+    bottom: 0;
+    right: 0;
+    left: 0; 
+    z-index: 2; 
+    margin: auto; 
+    max-width: 96%; 
+    margin-bottom: 25px;
+    border-radius: 30px;
+}
+
+
+div#slideup {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    position:fixed;
+    bottom:0;
+    display:none;
+    z-index: 2;
+    max-width: 100%;
+    margin: auto;
+    left: 0;
+    right: 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+div#backdrop {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    z-index: 1;
+    transition: opacity 0.9s;
+    background: black;
+    opacity: 0;
+}
+
+#old_password, #new_password1, #new_password2 {
+    border-radius: 30px;
+}
+
+div#backdropz {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    z-index: 2;
+    /* transition: opacity 0.9s; */
+    background: white;
+    opacity: 0;
+  }
+
+#spinner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 2;
+}
+
+@media (min-width: 992px) {
+    div.body {
+        display : none;
+    }
+    div#text-resolution {
+        display: block;
+        text-align: center;
+    }
+
+}
+
+/* ----------- Non-Retina Screens ----------- */
+@media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) 
+  and (-webkit-min-device-pixel-ratio: 1) { 
+    div.body {
+        display : none;
+    }
+    div#text-resolution {
+        display: block;
+        text-align: center;
+    }
+}
+
+/* ----------- Retina Screens ----------- */
+@media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (min-resolution: 192dpi) { 
+    div.body {
+        display : none;
+    }
+    div#text-resolution {
+        display: block;
+        text-align: center;
+    }
+}

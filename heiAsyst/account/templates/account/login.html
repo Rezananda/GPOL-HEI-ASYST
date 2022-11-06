@@ -1,0 +1,48 @@
+{% extends 'account/base.html' %}
+
+    {% block title %}
+    MASUK HEI-ASYST
+    {% endblock %}
+
+    {% block content %}
+
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                {% include 'attendance/message.html' %}
+                <h5 class="card-title text-primary">MASUK</h5>
+                <hr>
+                <form method="POST" id="form-login" action="/login/">
+                    {% csrf_token %}
+                        <div class="form-group">
+                            <input type="text" name='inisial' class="form-control" id="inisial" placeholder="Inisial, contoh : PMR" maxlength="3" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name='password' class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+                        </div>
+                        <div class="text-account">
+                            Belum punya akun? klik <a onclick="loading()" href="/register"><b>disini</b></a>
+                        </div>
+                        <button id="masuk-data" type="submit" class="btn btn-primary btn-block" style="margin-top: 10px;">Masuk</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#masuk-data').click(function(){
+                if($('#form-login input[type="text"]').val().length !== 0 && $('#form-login input[type="password"]').val().length !== 0){
+                    console.log('betul')
+                    document.getElementById("backdrop").style.width = "100%";
+                    document.getElementById("backdrop").style.opacity = "0.5";
+                    document.getElementById("spinner").style.display = "block";
+                }
+            });
+        });
+  </script>
+    {% endblock %}

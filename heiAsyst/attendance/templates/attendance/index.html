@@ -1,0 +1,498 @@
+{% extends 'attendance/base.html' %}
+
+{% block title %}
+HEI-ASYST
+{% endblock %}
+
+{% block content %}
+  {% load static %}
+  {% if status_attend == 'SUDAH' %}
+  <div id="botton-group" class="d-flex justify-content-center bg-white" style="height: 60px; margin-top: -65px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);" role="group" aria-label="Basic example">
+    <div id="data-saya" style="border: none; font-size: 18px; margin-top: 5px;" class="col-6 text-center text-primary"><a class="show-data" onclick="loading()" href="/my-attend-list"><i class="fa fa-list fa-lg"></i><p>Data Saya</p></a></div>
+    <div class="vl"></div>
+    <div id="tambah-data" onclick="slideShow()" style="border: none; font-size: 18px; margin-top: 5px; pointer-events: none; opacity: 0.5;" class="col-6 text-center text-primary" disabled><i class="fa fa-plus-circle fa-lg"></i><p>Tambah Data</p></div>
+  </div>
+  <br>
+  <div class="card" style="border-radius: 20px;">
+    <div class="card-body">
+      <h5 class="card-title text-primary">STATUS KEHADIRAN</h5>
+        <div class="alert alert-primary text-center" role="alert">
+          Anda hari ini <b><u>{{ status_attend }}</u></b> isi data
+        </div>
+    </div>
+  </div>
+  <br>
+  <div class="card" style="border-radius: 20px;">
+    <div class="card-body">
+      <h5 class="text-center text-primary">DATA HARI INI</h5>
+      <br>
+      <canvas id="myCharts" height="200px" style="max-height: 100%;"></canvas>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+      <script>
+        let ctx = document.getElementById('myCharts').getContext('2d');
+        let myPieChart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+                labels: ['Sehat', 'Sakit'],
+                datasets: [{
+                    backgroundColor: ['#32a0ff', '#FF6F6F'],
+                    data: [{{ jumlah_sehat }}, {{ jumlah_sakit }}],
+                }]
+            },
+          options: {
+            responsive: true,
+            legend: {
+              display: false,
+            }
+          }
+        });
+      </script>
+      <br>
+      <table class="table" style="width:15%; margin-left: auto; margin-right: auto;">
+        <tbody>
+          <tr style="border: none;">
+            <td style="border: none; text-align: left;">Sehat</td>
+            <td style="border: none;"><div style="width: 60px; height: 25px; background-color: #32a0ff; margin: auto;"></div></td>
+            <td style="border: none; text-align: left;">{{ jumlah_sehat }}/{{ total }}</td>
+          </tr>
+          <tr style="border: none;">
+            <td style="border: none; text-align: left;">Sakit</td>
+            <td style="border: none;"><div style="width: 60px; height: 25px; background-color: #FF6F6F; margin: auto;"></div></td>
+            <td style="border: none; text-align: left;">{{ jumlah_sakit }}/{{ total }}</td>
+          </tr>
+        </tbody>
+      </table>
+      {% if jumlah_sakit != "0" %}
+        <button onclick="slideShows()" type="button" style="border-radius: 25px;" class="btn btn-outline-primary btn-block">Detail Alasan</button>
+      {% else %}
+        <div class="alert alert-primary text-center" role="alert">
+          Anggota anda sehat semua
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <div style="height: 70px;"></div>
+    <div id="panelss">
+      <div class="modal-header">
+        <h5 id="judul-tambah" class="modal-title text-primary">ALASAN SAKIT</h5>
+        <h5 onclick="add_sick('kembali')" id="kembalis" class="modal-title text-primary" style="display: none;"><i class="material-icons">arrow_back</i></h5>
+        <button onclick="slideHides()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <table class="table table-striped text-center">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Alasan</th>
+            <th scope="col">Jumlah</th>
+          </tr>
+        </thead>
+        <tbody class="text-center" id="all-tables">
+          {% for k, v in alasan.items %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ k }}</td>
+              <td>{{ v }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+      </table>
+    </div>
+  {% elif status_attend == 'BELUM' or attend == False %}
+  <div id="botton-group" class="d-flex justify-content-center bg-white" style="height: 60px; margin-top: -65px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);" role="group" aria-label="Basic example">
+    <div id="data-saya" style="border: none; margin-top: 5px; font-size: 17px;" class="col-6 text-center text-primary"><a class="show-data" onclick="loading()" href="/my-attend-list"><i class="fa fa-list fa-lg"></i><p>Data Saya</p></a></div>
+    <div class="vl"></div>
+    <div id="tambah-data" onclick="slideShow()" style="border: none; margin-top: 5px; font-size: 17px;" class="col-6 text-center text-primary"><i class="fa fa-plus-square fa-lg"></i><p>Tambah Data</p></div>
+  </div>
+  <div class="alert alert-primary alert-dismissible fade show" role="alert" id="alert-null" style="display: none; margin-top: 10px;">
+    Mohon isi alasan anda
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <br>
+  <div class="card" style="border-radius: 20px; height: 130px;">
+    <div class="card-body">
+      <h5 class="card-title text-primary">STATUS KEHADIRAN</h5>
+        <div class="alert alert-primary text-center" role="alert">
+          Anda hari ini <b><u>{{ status_attend }}</u></b> isi data
+        </div>
+    </div>
+  </div>
+  <br>
+  <div class="card" style="border-radius: 20px;">
+    <div class="card-body">
+    <h5 class="text-center text-primary">DATA SEBELUMNYA</h5>
+    <br>
+    {% if status %}
+      <div class="alert alert-primary text-center" role="alert">
+        {{ status }}
+      </div>
+      <!-- <p class="text-center text-primary"></p> -->
+    {% else %}
+      <canvas id="myCharts" height="200px" style="max-height: 100%;"></canvas>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+      <script>
+        let ctx = document.getElementById('myCharts').getContext('2d');
+        let myPieChart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+                labels: ['Sehat', 'Sakit'],
+                datasets: [{
+                    backgroundColor: ['#32a0ff', '#FF6F6F'],
+                    data: [{{ jumlah_sehat }}, {{ jumlah_sakit }}],
+                }]
+            },
+          options: {
+            responsive: true,
+            legend: {
+              display: false,
+            }
+          }
+        });
+      </script>
+      <br>
+      <table class="table" style="width:15%; margin-left: auto; margin-right: auto;">
+        <tbody>
+          <tr style="border: none;">
+            <td style="border: none; text-align: left;">Sehat</td>
+            <td style="border: none;"><div style="width: 60px; height: 25px; background-color: #32a0ff; margin: auto;"></div></td>
+            <td style="border: none; text-align: left;">{{ jumlah_sehat }}/{{ total }}</td>
+          </tr>
+          <tr style="border: none;">
+            <td style="border: none; text-align: left;">Sakit</td>
+            <td style="border: none;"><div style="width: 60px; height: 25px; background-color: #FF6F6F; margin: auto;"></div></td>
+            <td style="border: none; text-align: left;">{{ jumlah_sakit }}/{{ total }}</td>
+          </tr>
+        </tbody>
+      </table>
+      {% if jumlah_sakit != "0" %}
+        <button onclick="slideShows()" type="button" style="border-radius: 25px;" class="btn btn-outline-primary btn-block">Detail Alasan</button>
+      </div>
+    </div>
+    <div style="margin-top: 70px;"></div>
+        {% else %}
+        <div class="alert alert-primary text-center" role="alert">
+          Anggota anda sehat semua
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 70px;"></div>
+      {% endif %}
+
+    {% endif %}
+
+    <div id="slideup" class="panel" style="max-height: 99%; overflow-y: auto;">
+      <div class="modal-header">
+        <h5 id="judul-tambah" class="modal-title text-primary">TAMBAH DATA</h5>
+        <h5 onclick="add_sick('kembali')" id="kembalis" class="modal-title text-primary" style="display: none;"><i class="material-icons">arrow_back</i></h5>
+        <button onclick="slideHide()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="container" style="margin-top: 10px; margin-bottom: 10px;">
+
+        <div id="pertanyaan-tambah">
+          <div class="alert alert-primary text-center" role="alert">
+            Apakah hari ini semua anggota anda sehat?
+          </div>
+          <div id="data-add" class="d-flex justify-content-center" style="margin-top: 10px;">
+            <button id="ada-sakit" style="border-radius: 15px; width: 100px;" type="submit" class="btn btn-outline-primary" data-toggle="modal" onclick="add_sick('isi');">Tidak</button>
+            <div style="width: 30px;"></div>
+            <button onclick="add_data('ya'); loading()" id="sehat-semua" style="border-radius: 15px; width: 100px" type="button" class="btn btn-primary" data-target="#exampleModal">Ya</button>
+          </div>
+        </div>
+
+          <form id="form-add" style="display: none;" method="POST">
+            {% csrf_token %}
+            <button id="addRow" type="button" class="btn btn-outline-primary btn-block d-flex justify-content-center" style="margin-top: 10px; border-radius: 20px;"><i class="material-icons">add_circle</i>&nbsp;&nbsp;Tambah Alasan Sakit</button>
+
+            <br>
+            <div id="inputFormRow">
+              <div class="input-group">
+                <select class="custom-select" id="first-input">
+                  <option selected disabled>Pilih Alasan...</option>
+                  <option value="Flu">Flu</option>
+                  <option value="Batuk">Batuk</option>
+                  <option value="Demam">Demam</option>
+                  <option value="Sakit Kepala">Sakit Kepala</option>
+                  <option value="Datang Bulan">Datang Bulan</option>
+                  <option value="Sakit Tenggorokan">Sakit Tenggorokan</option>
+                  <option value="Maag">Maag</option>
+                  <option value="Diare">Diare</option>
+                  <option value="Sakit Gigi">Sakit Gigi</option>
+                  <option value="Mual-mual">Mual-mual</option>
+                  <option value="Cacar">Cacar</option>
+                  <option value="Gatal-gatal">Gatal-gatal</option>
+                  <option value="Typhus">Typhus</option>
+                  <option value="Influenza/Pilek">Influenza/Pilek</option>
+                  <option value="Usus Buntu">Usus Buntu</option>
+                  <option value="Infeksi Paru">Infeksi Paru</option>
+                  <option value="Sakit Mata">Sakit Mata</option>
+                  <option value="Backpain">Backpain</option>
+                  <option value="KIPI">KIPI</option>
+<option value="COVID">COVID</option>
+                  <option value="Sakit Lainnya">Sakit Lainnya</option>
+
+                </select>
+                <input id=demoInput1 value="1" type="number" class="form-control col-2 text-center numbers" min=1 max=100 readonly>
+                <i id="minus" style="margin: auto; font-size: 35px;" class="material-icons text-primary" onclick="decrement('demoInput1')">indeterminate_check_box</i>
+                <i id="plus" style="margin: auto; font-size: 35px;" class="material-icons text-primary" onclick="increment('demoInput1')">add_box</i>
+
+                <!-- <div class="input-group-append"> -->
+                  <!-- <label class="input-group-text" for="inputGroupSelect02">Options</label> -->
+                <!-- </div> -->
+              </div>
+
+              <!-- <div class="input-group">
+                <input type="text" name="title" class="form-control m-input" id="first-input" placeholder="Alasan Sakit" autocomplete="off" required>
+                <input id=demoInput1 value="1" type="number" class="form-control col-2 text-center numbers" min=1 max=100 readonly>
+                <i id="minus" style="margin: auto; font-size: 35px;" class="material-icons text-primary" onclick="decrement('demoInput1')">indeterminate_check_box</i>
+                <i id="plus" style="margin: auto; font-size: 35px;" class="material-icons text-primary" onclick="increment('demoInput1')">add_box</i>
+              </div> -->
+            </div>
+            <br id="afterinput">
+            <div id="newRow"></div>
+            <button id="addButtons" style="border-radius: 25px; display: none;" onclick="add_data('tidak')" type="button" class="btn btn-primary btn-block">Simpan</button>
+            <div style="margin-top: 20px;"></div>
+          </form>
+      </div>
+    </div>
+
+    <div id="panelss">
+      <div class="modal-header">
+        <h5 id="judul-tambah" class="modal-title text-primary">ALASAN SAKIT</h5>
+        <h5 onclick="add_sick('kembali')" id="kembalis" class="modal-title text-primary" style="display: none;"><i class="material-icons">arrow_back</i></h5>
+        <button onclick="slideHides()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <table class="table table-striped text-center">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Alasan</th>
+            <th scope="col">Jumlah</th>
+          </tr>
+        </thead>
+        <tbody class="text-center" id="all-tables">
+          {% for k, v in alasan.items %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ k }}</td>
+              <td>{{ v }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+      </table>
+    </div>
+
+  {% endif %}
+
+<div id="backdrop" onclick="slideHide()"></div>
+<div id="backdrops" onclick="slideHides()"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+
+  function slideShow(){
+    $('.container-nav-bottom').css("display", "none")     
+    jQuery('#slideup').slideDown(600);
+    document.getElementById("backdrop").style.width = "100%";
+    document.getElementById("backdrop").style.opacity = "0.5";
+    
+  }
+
+  function slideShows(){
+    $('.container-nav-bottom').css("display", "none")     
+    jQuery('#panelss').slideDown(600);
+    document.getElementById("backdrops").style.width = "100%";
+    document.getElementById("backdrops").style.opacity = "0.5";
+    
+  }
+
+  function slideHide(){
+    $('#pertanyaan-tambah').css("display", "block")
+    $('#form-add').css("display", "none")
+    $('#newRow').empty();
+    jQuery('#slideup').slideUp(600);
+    document.getElementById("backdrop").style.width = "0";
+    document.getElementById("backdrop").style.opacity = "0";
+    $('.container-nav-bottom').css("display", "block")
+    document.getElementById("form-add").reset();
+  }
+
+  function slideHides(){
+    jQuery('#panelss').slideUp(600);
+    document.getElementById("backdrops").style.width = "0";
+    document.getElementById("backdrops").style.opacity = "0";
+    $('.container-nav-bottom').css("display", "block")
+  }
+
+  $('button#clicker').on("click", (function () {
+    $('button#clicker').removeClass("active");
+    $(this).addClass("active");
+  }));
+
+  $("#first-input").change(function () {
+      if ($(this).val()) {
+        $("#addButtons").show();
+      }
+      else {
+        $("#addButtons").hide();
+      }
+  });
+
+  function add_sick(param) {
+    if(param == "isi"){
+      $('#judul-tambah').css("display", "none")
+      $('#kembalis').css("display", "block")
+      $('#form-add').css("display", "block")
+      $('#pertanyaan-tambah').css("display", "none")    
+    }else if (param == "kembali"){
+      $('#judul-tambah').css("display", "block")
+      $('#kembalis').css("display", "none");
+      $('#form-add').css("display", "none");
+      $('#pertanyaan-tambah').css("display", "block");
+      $('#inputFormRow').val('');
+      $('#form-add').trigger('reset')
+      $('#newRow').remove();
+      $("<div id='newRow'></div>").insertAfter( $( "br#afterinput" ) );
+    }
+  }
+  // <input type="text" name="title" class="form-control" id="first-input`+clicks+`" placeholder="Alasan Sakit" autocomplete="off" required>
+  var clicks = 1;
+  $("#addRow").click(function () {
+    clicks += 1;
+    $('#newRow').append(`
+    <div id="inputFormRow">
+      <div class="input-group">
+          <i id="removeRow" style="margin: auto; font-size: 35px; " class="material-icons text-danger">disabled_by_default</i>
+          <select class="custom-select" id="first-input`+clicks+`">
+            <option selected disabled>Pilih Alasan...</option>
+            <option value="Flu">Flu</option>
+            <option value="Batuk">Batuk</option>
+            <option value="Demam">Demam</option>
+            <option value="Sakit Kepala">Sakit Kepala</option>
+            <option value="Datang Bulan">Datang Bulan</option>
+            <option value="Sakit Tenggorokan">Sakit Tenggorokan</option>
+            <option value="Maag">Maag</option>
+            <option value="Diare">Diare</option>
+            <option value="Sakit Gigi">Sakit Gigi</option>
+            <option value="Mual-mual">Mual-mual</option>
+            <option value="Cacar">Cacar</option>
+            <option value="Gatal-gatal">Gatal-gatal</option>
+            <option value="Typhus">Typhus</option>
+            <option value="Influenza/Pilek">Influenza/Pilek</option>
+            <option value="Usus Buntu">Usus Buntu</option>
+            <option value="Infeksi Paru">Infeksi Paru</option>
+            <option value="Sakit Mata">Sakit Mata</option>
+            <option value="Backpain">Backpain</option>
+            <option value="KIPI">KIPI</option>
+<option value="COVID">COVID</option>
+            <option value="Sakit Lainnya">Sakit Lainnya</option>
+
+          </select>
+          <input id="demoInput`+clicks+`" value="1" type="number" class="form-control col-2 text-center numbers" min=1 max=100 readonly>
+          <i id="minus" style="margin: auto; font-size: 35px;" class="material-icons text-primary" onclick="decrement('demoInput`+clicks+`')">indeterminate_check_box</i>
+          <i id="plus" style="margin: auto; font-size: 35px;" class="material-icons text-primary" onclick="increment('demoInput`+clicks+`')">add_box</i>
+        </div>
+      <br>
+    </div>
+    <script>
+      function increment(param) {
+        const inc = param
+        document.getElementById(inc).stepUp(1);
+      }
+      function decrement(param) {
+        const dec = param
+        document.getElementById(dec).stepDown(1);
+      }
+    </`+`script>
+    `);
+  });
+
+  function increment(param) {
+    const inc = param
+    document.getElementById(inc).stepUp(1);
+  }
+
+  function decrement(param) {
+    const dec = param
+    document.getElementById(dec).stepDown(1);
+  }
+
+  $(document).on('click', '#removeRow', function () {
+    $(this).closest('#inputFormRow').remove();
+  });
+
+  function add_data(param){
+    var token = '{{csrf_token}}';
+    const status = param;
+    
+    if (status == 'ya'){
+      $.ajax({
+      type : "POST", 
+      url: window.location.pathname+"add-attend/",
+      data: {
+        status : status,
+        csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+      },
+      success: successFunction
+      });
+    }
+
+    else if (status == 'tidak') {
+
+      var listNumber = [];
+      var listText = [];
+
+      $('#form-add input[type=number]').each(function() {
+        listNumber.push($(this).val())
+      });
+
+      $('#form-add select').each(function() {
+        listText.push($(this).val())
+      });
+
+      
+      
+      for(var i = 0; i < listText.length; i++){
+        if(listText[i] === ""){
+          $('#alert-null').css("display", "block")
+          slideHide()
+          return false
+        }
+      }
+
+      object = {}
+
+      listText.forEach(function(k, i){
+        object[k] = parseInt(listNumber[i])
+      })
+      console.log(object)
+      $.ajax({  
+        url: window.location.pathname+"add-attend/",  
+        type:"POST",  
+        data: {
+          status : status,
+          alasan_sakit : JSON.stringify(object),
+          csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+        },
+        success : successFunction
+      });
+      loading()  
+    }
+  }
+
+  function successFunction(msg) {
+    window.location.href = '/all-attend/'
+  }
+
+  $('#formedit').submit(function(){
+    $("#formedit :disabled").removeAttr('disabled');
+  });
+
+</script>
+{% endblock %}

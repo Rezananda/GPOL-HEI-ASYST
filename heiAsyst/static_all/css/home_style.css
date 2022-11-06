@@ -1,0 +1,335 @@
+div#text-resolution {
+    display: none;
+}
+
+button#addButtons {
+    border-radius: 30px;
+}
+
+#navbar-top {
+    background: #0080ed;
+}
+
+div.jumbotron-base {
+    /* height: 120px; */
+    z-index: -2;
+    background: #0080ed;
+    border-bottom-left-radius: 50px 30px;
+    border-bottom-right-radius: 50px 30px;
+}
+
+div.container.lead {
+    margin-top: -25px;
+    color: white;
+    display: flex;
+    align-items: center;
+    font-size: 21px;
+}
+
+/* .btn-outline-light:hover{
+    text-decoration: none;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+} */
+
+#data-saya:active {
+    transform: translateY(2px);
+}
+
+#tambah-data:active {
+    transform: translateY(2px);
+}
+
+/* div.status-bar {
+    box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.1);
+    margin-top: -100px;
+    background-color: #32a0ff;
+    width: 100%;
+    height: 100px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    z-index: -1;
+} */
+
+#status-bar-text > h5 {
+    padding-top: 10px;
+}
+
+div.text-lead {
+    padding-left: 10px;
+}
+
+div#cards {
+    border-style: none;
+}
+
+div#card-bodys {
+    /* box-shadow: 0 -3px 4px rgba(0, 0, 0, 0.1); */
+    z-index: 0;
+    margin-top: -30px;
+    /* border-top-left-radius: 30px;
+    border-top-right-radius: 30px; */
+}
+
+#flex-gap > div > button {
+    width:160px; 
+    max-width: 100%; 
+    border-radius: 25px;
+    z-index: 0;
+}
+
+.btn-sq-sm {
+    /* box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2); */
+    width: 70px !important;
+    height: 70px !important;
+    font-size: 30px;
+    border-radius: 15px;
+  }
+/* #flex-gap button {
+
+} */
+
+nav.nav-bottom {
+    position: fixed;
+    bottom: 0;
+    height: 55px;
+    box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.3);
+    background-color: #0080ed;
+    display: flex;
+    overflow-x: auto;
+    z-index: 1;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    margin: auto;
+    left: 0;
+    right: 0;
+    /* max-width: 95%; */
+    /* margin-bottom: 10px; */
+}
+
+a.nav_link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    min-width: 50px;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: sans-serif;
+    font-size: 12px;
+    color: #80c1ff;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.1s ease-in-out;
+}
+
+a.nav_link:hover {
+    background-color: #47a0ff;
+    text-decoration: none;
+}
+
+a.nav_link.active {
+    color: #ffffff;
+}
+
+/* a.nav_link--active {
+    color: #17a2b8;
+} */
+
+i.nav_icon {
+    font-size: 30px;
+}
+
+h5.card-title {
+    text-align: center;
+    font-size: 19px;
+}
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.vl {
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    height: 50px;
+    margin: auto;
+  }
+
+a.show-data, a.show-data:hover {
+    text-decoration:none;
+    /* font-weight:bold */
+    color: inherit;
+}
+
+
+div#panel {
+    display: none;
+}
+
+div.buttonisikehadiran {
+    margin-top: 10px;
+}
+
+div.buttonisikehadiran a {
+    width: 100px;
+}
+
+.chart {
+    display: flex;
+    overflow-x: auto;
+}
+
+.chart::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.chart::-webkit-scrollbar:vertical {
+    width: 10px;
+}
+
+.chart::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+.chart::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    border: 2px solid white; /* should match background, can't be transparent */
+    background-color: #e6e6e6;
+}
+
+div#slideup {
+
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    position:fixed;
+    bottom:0;
+    /* width:100%; */
+    display:none;
+    /* background-color: aliceblue; */
+    /* padding: 20px; */
+    z-index: 2;
+    max-width: 100%;
+    margin: auto;
+    left: 0;
+    right: 0;
+    /* height: 300px; */
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+
+  div#panelss {
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    position:fixed;
+    bottom:0;
+    /* width:100%; */
+    display:none;
+    /* background-color: aliceblue; */
+    /* padding: 20px; */
+    z-index: 2;
+    max-width: 100%;
+    margin: auto;
+    left: 0;
+    right: 0;
+    /* height: 300px; */
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+
+.borderless td, .borderless th {
+    border: none;
+  }
+
+.modal-backdrop.in {
+    opacity: 0.9;
+  }
+
+div#backdrop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  z-index: 1;
+  transition: opacity 0.9s;
+  background: black;
+  opacity: 0;
+}
+
+div#backdrops {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  z-index: 1;
+  transition: opacity 0.9s;
+  background: black;
+  opacity: 0;
+}
+div#backdropz {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    z-index: 2;
+    /* transition: opacity 0.9s; */
+    background: white;
+    opacity: 0;
+  }
+
+#spinner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 2;
+}
+
+/* versi desktop */
+@media (min-width: 992px) {
+    div.body {
+        display : none;
+    }
+    div#text-resolution {
+        display: block;
+        text-align: center;
+    }
+
+}
+
+/* ----------- Non-Retina Screens ----------- */
+@media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) 
+  and (-webkit-min-device-pixel-ratio: 1) { 
+    div.body {
+        display : none;
+    }
+    div#text-resolution {
+        display: block;
+        text-align: center;
+    }
+}
+
+/* ----------- Retina Screens ----------- */
+@media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (min-resolution: 192dpi) { 
+    div.body {
+        display : none;
+    }
+    div#text-resolution {
+        display: block;
+        text-align: center;
+    }
+}

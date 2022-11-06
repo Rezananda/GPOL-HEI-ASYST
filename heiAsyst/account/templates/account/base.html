@@ -1,0 +1,91 @@
+
+<!doctype html>
+<html lang="en">
+  {% load pwa %}
+  <head>
+    {% load static %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="black-translucent">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="HEI-ASYST">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link rel="apple-touch-startup-image" href="{% static 'account/icons/icon-512x512.png' %}">
+
+    <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)" href="{% static 'account/icons/icon-512x512.png' %}">
+
+    <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" href="{% static 'account/icons/icon-512x512.png' %}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Google font and icon -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- My CSS -->
+    <link rel="stylesheet" href="{% static 'css/auth_style.css'%}" type="text/css">    
+
+    {% progressive_web_app_meta %}
+    <!-- <link rel="manifest" href="{% static 'account/manifest.json' %}"> -->
+    
+    <!-- Title Start -->
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Title End -->
+    </head> 
+    <body>
+      <div class="container">
+        <div class="alert alert-danger" id="text-resolution" role="alert">
+          Hanya tersedia dalam versi Mobile
+        </div>
+      </div>
+    <div class="body">
+    <!-- Jumbotron Start -->
+    <!-- <div class="container lead">
+        <a href="/"><img class="icon" src="{% static 'account/icons/icon-512x512.png' %}" width="80px"/></a>
+        <p class="text-white"><b>HEI-ASYST</b></p>
+    </div> -->
+    <!-- Jumbotron End -->
+    <div class="jumbotron jumbotron-fluid jumbotron-base">
+      <div class="container lead">
+        <a href="/"><img class="icon" src="{% static 'account/icons/icon-512x512.png' %}" width="80px"/></a>
+        <p class="text-white"><b>DPOL HEI-ASYST</b></p>
+      </div>
+    </div>
+
+    <!-- Panel Start -->
+
+    <div class="container">
+
+      {% block content %}
+      {% endblock %}
+
+    </div>
+    </div>
+    <div id="backdrop"></div>
+    <div class="spinner-border" id="spinner" role="status" style="width: 3rem; height: 3rem; display: none;">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      function loading() {
+          document.getElementById("backdrop").style.width = "100%";
+          document.getElementById("backdrop").style.opacity = "0.5";
+          document.getElementById("spinner").style.display = "block";
+      }
+  </script>
+  </body>
+</html>

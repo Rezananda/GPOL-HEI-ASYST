@@ -1,0 +1,63 @@
+{% extends 'account/base.html' %}
+
+{% block title %}
+REGISTRASI HEI-ASYST
+{% endblock %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            {% include 'attendance/message.html' %}
+            <h5 class="card-title text-primary">REGISTRASI</h5>
+            <hr>
+            <form method="POST" id="form-register" action="/register/">
+                {% csrf_token %}
+                {{ profile_form.full_name|as_crispy_field }}
+                {{ form.username|as_crispy_field }}
+                {{ profile_form.pilih_biro|as_crispy_field }}
+                {{ profile_form.jumlah_member|as_crispy_field }}
+                {{ form.password1|as_crispy_field }}
+                {{ form.password2|as_crispy_field }}
+                <div class="text-account">
+                    Kembali ke halaman <a onclick="loading()" href="/login/"><b>masuk</b></a> 
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top: 10px;">Registrasi</button>
+            </form>
+        </div>
+    </div>
+    <div style="margin-top: 20px;"></div>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $('#id_pilih_biro').on('change', function() {
+        if(this.value == "DPOL" || this.value == "SSD" || this.value == "SSP" || this.value == "SPO" || this.value == "SDS" || this.value == "SSI"){
+            $('#id_jumlah_member').val('0');
+            $('#id_jumlah_member').prop('readonly', true);
+        }else {
+            $('#id_jumlah_member').val('');
+            $('#id_jumlah_member').prop('readonly', false);
+        }
+    });
+
+    // $(document).ready(function(){
+    //         $('#form-register').click(function(){
+    //             $('input[type="text"]').each(function() {
+    //                 if ($(this).val() != "") {
+    //                     console.log('betul')
+    //                     document.getElementById("backdrop").style.width = "100%";
+    //                     document.getElementById("backdrop").style.opacity = "0.5";
+    //                     document.getElementById("spinner").style.display = "block";
+    //                 }
+    //             });
+    //         });
+    //     });
+</script>
+
+{% endblock %}
